@@ -1,0 +1,60 @@
+<h4>CryptoWallet</h4>
+<app-button
+  [config]="primaryButton"
+  data-bs-toggle="modal"
+  data-bs-target="#exampleModal"
+></app-button>
+
+<div *ngIf="walletList.length > 0; else noWallets">
+  <div class="cards">
+    <div class="card" style="width: 18rem" *ngFor="let wallet of walletList">
+      <div class="card-body">
+        <h5 class="card-title">{{ wallet.name }}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">
+          Cryptocurrency Count: {{ wallet.cryptoCount }}
+        </h6>
+        <app-button [config]="cardButton"></app-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noWallets>
+  <p class="noWallets">No wallets in the system. Add a new wallet.</p>
+</ng-template>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add new wallet</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-input
+          [config]="walletName"
+          (providedWalletName)="onWalletNameChange($event)"
+        ></app-input>
+      </div>
+      <div class="modal-footer">
+        <app-button [config]="closeButton" data-bs-dismiss="modal"></app-button>
+        <app-button
+          [config]="saveButton"
+          (click)="addWallet()"
+          data-bs-dismiss="modal"
+        ></app-button>
+      </div>
+    </div>
+  </div>
+</div>

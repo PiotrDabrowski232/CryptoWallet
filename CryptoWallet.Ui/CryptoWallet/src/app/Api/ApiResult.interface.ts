@@ -1,5 +1,5 @@
-export interface WalletBasicInfo{
-    Id: string,
-    Name: string,
-    CryptoCount: number,
+export interface WalletBasicInfo {
+    id: string,
+    name: string,
+    cryptoCount: number,
 }

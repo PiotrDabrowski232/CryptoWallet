@@ -1,46 +1,29 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ButtonComponent } from './button/button.component';
 import { ButtonConfig } from './button/button-interface';
 import { WalletBasicInfo } from './Api/ApiResult.interface';
 import { CommonModule } from '@angular/common';
+import { InputComponent } from './input/input.component';
+import { InputConfig } from './input/input.interface';
+import { ApiService } from './Api/api.service';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ButtonComponent, CommonModule],
-  template: `
-  
-    <h4>CryptoWallet</h4>
-    <app-button [config]="primaryButton"></app-button>
-    
-    <div *ngIf="walletList.length > 0; else noWallets">
-      <div class="cards">
-        <div class="card" style="width: 18rem;" *ngFor="let wallet of walletList">
-          <div class="card-body">
-            <h5 class="card-title">{{wallet.Name}}</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Cryptocurrency Count: {{wallet.CryptoCount}}</h6>
-            <app-button [config]="cardButton"></app-button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <ng-template #noWallets >
-      <p class="noWallets">No wallets in the system. Add a new wallet.</p>
-    </ng-template>
-
-    <router-outlet />
-  `,
+  imports: [ButtonComponent, CommonModule, InputComponent],
+  templateUrl: './app.components.html',
   styles: `
     ::ng-deep .newWallet { 
         position: fixed;
         right: 12vw;
         top: 10vh;
       }
+
       h4{
         margin-top:4vh;
         text-align: center;
       }
+
       .cards{
         display: flex;
         flex-wrap:wrap;
@@ -48,17 +31,59 @@ import { CommonModule } from '@angular/common';
         padding-left: 3vw;
         padding-right: 3vw;
       }
+
       .card{
         margin: 2rem;
       }
+
       .noWallets{
         position: fixed;
         top:20vh;
         left: 42%;
       }`
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'CryptoWallet';
+
+  @ViewChild(InputComponent) inputComponent!: InputComponent;
+
+  newWalletName: string = '';
+  walletList: WalletBasicInfo[] = [];
+
+  constructor(private apiService: ApiService) { }
+
+  ngOnInit(): void {
+    this.apiService.getWallets().subscribe({
+      next: data => {
+        this.walletList = data;
+      },
+      error: (error) => {
+        console.log(error)
+      }
+    })
+  }
+
+  onWalletNameChange(newName: string): void {
+    this.newWalletName = newName;
+  }
+
+  addWallet(): void {
+    if (this.newWalletName.trim()) {
+      const newWallet: WalletBasicInfo = {
+        id: crypto.randomUUID(),
+        name: this.newWalletName,
+        cryptoCount: 0
+      };
+      this.walletList.push(newWallet);
+      this.newWalletName = '';
+      this.inputComponent.clearInput();
+    }
+  }
+
+  walletName: InputConfig = {
+    type: "Text",
+    label: "Wallet Name"
+  }
 
   primaryButton: ButtonConfig = {
     color: 'btn-primary',
@@ -77,37 +102,19 @@ export class AppComponent {
     type: 'button'
   }
 
-  walletList: WalletBasicInfo[] = [
-    {
-      Id: 'f47b6549-45a9-4e57-b80d-93f3c9e6b207',
-      Name: 'Bitcoin Wallet',
-      CryptoCount: 5
-    },
-    {
-      Id: 'a1b2c3d4-56e7-8f9g-12h3-45i6j7k8l9m0',
-      Name: 'Ethereum Wallet',
-      CryptoCount: 12
-    },
-    {
-      Id: '123e4567-e89b-12d3-a456-426614174000',
-      Name: 'Litecoin Wallet',
-      CryptoCount: 3
-    },
-    {
-      Id: '123e4222-e89b-12d3-a456-426614174000',
-      Name: 'Litecoin Wallet',
-      CryptoCount: 3
-    },
-    {
-      Id: '123e4511-e89b-12d3-a456-426614174000',
-      Name: 'Litecoin Wallet',
-      CryptoCount: 3
-    },
-    {
-      Id: '123e4242-e89b-12d3-a456-426614174000',
-      Name: 'Litecoin Wallet',
-      CryptoCount: 3
-    }
-  ];
+  closeButton: ButtonConfig = {
+    color: 'btn-secondary',
+    label: 'close',
+    width: "fit-content",
+    height: 'auto',
+    type: 'button'
+  }
 
+  saveButton: ButtonConfig = {
+    color: 'btn-success',
+    label: 'add',
+    width: "fit-content",
+    height: 'auto',
+    type: 'button'
+  }
 }
