@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   templateUrl: './wallets.components.html',
   styles: `
     ::ng-deep .newWallet { 
-        position: fixed;
+        position: absolute;
         right: 12vw;
         top: 10vh;
       }
@@ -29,12 +29,12 @@ import { Router } from '@angular/router';
         display: flex;
         flex-wrap:wrap;
         padding-top: 5rem;
-        padding-left: 3vw;
+        padding-left: 7vw;
         padding-right: 3vw;
       }
 
       .card{
-        margin: 2rem;
+        margin: 1rem;
       }
 
       .noWallets{
@@ -107,17 +107,21 @@ export class WalletsComponent implements OnInit {
             backdrop.remove();
           }
 
-          this.router.navigate(['/Wallet'], {
-            queryParams: { wallet: data }
-          });
+          this.navigateToWallet(data);
+
         },
         error: (error) => {
           if (error)
             this.showToast("text-bg-danger", error)
         }
       })
-
     }
+  }
+
+  navigateToWallet(param: string): void {
+    this.router.navigate(['/Wallet'], {
+      queryParams: { wallet: param }
+    });
   }
 
   walletName: InputConfig = {

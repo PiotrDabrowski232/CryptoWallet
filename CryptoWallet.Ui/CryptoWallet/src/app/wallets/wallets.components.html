@@ -26,7 +26,10 @@
         <h6 class="card-subtitle mb-2 text-body-secondary">
           Cryptocurrency Count: {{ wallet.cryptoCount }}
         </h6>
-        <app-button [config]="cardButton"></app-button>
+        <app-button
+          [config]="cardButton"
+          (click)="navigateToWallet(wallet.id)"
+        ></app-button>
       </div>
     </div>
   </div>
