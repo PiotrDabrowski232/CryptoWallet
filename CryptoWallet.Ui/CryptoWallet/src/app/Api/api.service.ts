@@ -20,4 +20,17 @@ export class ApiService {
         })
       );
   }
+
+  newWallet(WalletName: string): Observable<string> {
+    return this.http.post<string>(`${this.baseURL}/CreateWallet`, JSON.stringify(WalletName), {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      responseType: 'text' as 'json'
+    })
+      .pipe(
+        catchError((error) => {
+          console.error('API Error:', error);
+          throw error.error;
+        })
+      );
+  }
 }

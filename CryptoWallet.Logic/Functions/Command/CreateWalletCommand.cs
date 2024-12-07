@@ -24,15 +24,17 @@ namespace CryptoWallet.Logic.Functions.Command
         {
             await _walletService.WalletValidation(request.WalletName, cancellationToken);
 
-            _context.Add(new Wallet()
+            var wallet = new Wallet()
             {
                 Id = Guid.NewGuid(),
                 Name = request.WalletName,
-            });
+            };
+
+            _context.Add(wallet);
 
             _context.SaveChanges();
 
-            return request.WalletName;
+            return wallet.Id.ToString();
         }
     }
 }

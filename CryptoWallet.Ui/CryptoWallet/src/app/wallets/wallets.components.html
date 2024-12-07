@@ -1,3 +1,16 @@
+<div
+  class="toast position-fixed align-items-right border-0"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  id="liveToast"
+  style="z-index: 1100"
+>
+  <div class="d-flex">
+    <div class="toast-body">{{toastMessage}}</div>
+  </div>
+</div>
+
 <h4>CryptoWallet</h4>
 <app-button
   [config]="primaryButton"
@@ -49,11 +62,7 @@
       </div>
       <div class="modal-footer">
         <app-button [config]="closeButton" data-bs-dismiss="modal"></app-button>
-        <app-button
-          [config]="saveButton"
-          (click)="addWallet()"
-          data-bs-dismiss="modal"
-        ></app-button>
+        <app-button [config]="saveButton" (click)="addWallet()"></app-button>
       </div>
     </div>
   </div>
