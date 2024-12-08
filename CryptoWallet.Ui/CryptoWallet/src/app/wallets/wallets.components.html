@@ -15,7 +15,7 @@
 <app-button
   [config]="primaryButton"
   data-bs-toggle="modal"
-  data-bs-target="#exampleModal"
+  data-bs-target="#addWalletModal"
 ></app-button>
 
 <div *ngIf="walletList.length > 0; else noWallets">
@@ -27,8 +27,15 @@
           Cryptocurrency Count: {{ wallet.cryptoCount }}
         </h6>
         <app-button
-          [config]="cardButton"
+          [config]="detailsCardButton"
           (click)="navigateToWallet(wallet.id)"
+        ></app-button>
+
+        <app-button
+          [config]="updateCardButton"
+          data-bs-toggle="modal"
+          data-bs-target="#updateWalletModal"
+          (click)="walletName.currentValue = wallet.name"
         ></app-button>
       </div>
     </div>
@@ -39,9 +46,29 @@
   <p class="noWallets">No wallets in the system. Add a new wallet.</p>
 </ng-template>
 
-<app-modal [dataBsTarget]="modalBsTarget" [dataBsToggle]="modalBsTarget">
+<app-modal [dataBsTarget]="addModalBsTarget">
   <div modal-header>
     <h1 class="modal-title fs-5">Add new wallet</h1>
+  </div>
+  <div modal-body>
+    <app-input
+      [config]="walletName"
+      (providedWalletName)="onWalletNameChange($event)"
+    ></app-input>
+  </div>
+  <div modal-footer>
+    <app-button
+      style="margin-right: 0.5vw"
+      [config]="closeButton"
+      data-bs-dismiss="modal"
+    ></app-button>
+    <app-button [config]="saveButton" (click)="addWallet()"></app-button>
+  </div>
+</app-modal>
+
+<app-modal [dataBsTarget]="updateModalBsTarget">
+  <div modal-header>
+    <h1 class="modal-title fs-5">Update wallet name</h1>
   </div>
   <div modal-body>
     <app-input

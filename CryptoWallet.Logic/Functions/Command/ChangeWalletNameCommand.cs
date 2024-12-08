@@ -1,14 +1,13 @@
 ﻿using CryptoWallet.Data.DatabaseConnection;
-using CryptoWallet.Logic.Exceptions;
 using CryptoWallet.Logic.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CryptoWallet.Logic.Functions.Command
 {
-    public class ChangeWalletNameCommand(string currentName, string newWalletName) : IRequest<bool>
+    public class ChangeWalletNameCommand(Guid id, string newWalletName) : IRequest<bool>
     {
-        public string CurrentName { get; set; } = currentName;
+        public Guid Id { get; set; } = id;
         public string NewWalletName { get; set; } = newWalletName;
     }
 
@@ -24,7 +23,7 @@ namespace CryptoWallet.Logic.Functions.Command
         {
             await _walletService.WalletValidation(request.NewWalletName, cancellationToken);
 
-            var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Name.ToUpper() == request.CurrentName.ToUpper());
+            var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (wallet == null)
                 return false;

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 
 
 
@@ -9,6 +9,5 @@ import { Component, Input } from '@angular/core';
   styles: ``
 })
 export class ModalComponent {
-  @Input() dataBsToggle!: string;
   @Input() dataBsTarget!: string;
 }

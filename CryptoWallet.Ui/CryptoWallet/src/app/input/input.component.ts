@@ -6,7 +6,7 @@ import { InputConfig } from './input.interface';
   imports: [],
   template: `
     <div class="form-floating mb-3">
-      <input #WalletNameAdded [type]="config.type" class="form-control" id="floatingInput" [placeholder]="config.label" (input)="onInput($event)">
+      <input #WalletNameAdded [type]="config.type" class="form-control" id="floatingInput" [value]="this.config.currentValue ?? ''" [placeholder]="config.label" (input)="onInput($event)">
       <label for="floatingInput">{{config.label}}</label>
     </div>
   `,

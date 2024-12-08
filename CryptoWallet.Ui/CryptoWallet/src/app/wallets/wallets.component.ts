@@ -21,6 +21,10 @@ import { ModalComponent } from '../modal/modal.component';
         top: 10vh;
       }
 
+      ::ng-deep .updateWalletButton{
+        margin-left: 0.5vw;
+      }
+
       h4{
         margin-top:4vh;
         text-align: center;
@@ -48,8 +52,9 @@ export class WalletsComponent implements OnInit {
 
   @ViewChild(InputComponent) inputComponent!: InputComponent;
 
-  modalBsToggle: string = 'modal';
-  modalBsTarget: string = 'exampleModal';
+
+  addModalBsTarget: string = 'addWalletModal';
+  updateModalBsTarget: string = 'updateWalletModal';
   newWalletName: string = '';
   toastMessage: string = '';
   walletList: WalletBasicInfo[] = [];
@@ -98,7 +103,7 @@ export class WalletsComponent implements OnInit {
             this.newWalletName = '';
             this.inputComponent.clearInput();
 
-            const modal = document.getElementById("exampleModal");
+            const modal = document.getElementById(this.addModalBsTarget);
 
             if (modal) {
               const modalInstance = Modal.getInstance(modal);
@@ -130,7 +135,8 @@ export class WalletsComponent implements OnInit {
 
   walletName: InputConfig = {
     type: "Text",
-    label: "Wallet Name"
+    label: "Wallet Name",
+    currentValue: ''
   }
 
   primaryButton: ButtonConfig = {
@@ -142,12 +148,21 @@ export class WalletsComponent implements OnInit {
     type: 'button'
   }
 
-  cardButton: ButtonConfig = {
+  detailsCardButton: ButtonConfig = {
     color: 'btn-info',
     label: 'Check Details',
     width: "fit-content",
     height: 'auto',
     type: 'button'
+  }
+
+  updateCardButton: ButtonConfig = {
+    color: 'btn-warning',
+    label: 'Update name',
+    width: "fit-content",
+    height: 'auto',
+    type: 'button',
+    additionalClass: "updateWalletButton",
   }
 
   closeButton: ButtonConfig = {

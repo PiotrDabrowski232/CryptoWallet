@@ -70,11 +70,11 @@ namespace CryptoWallet.Controllers
 
         [HttpPut]
         [Route("/Wallet")]
-        public async Task<ActionResult> Wallet([FromQuery] string walletName, [FromBody] string newWalletName)
+        public async Task<ActionResult> Wallet([FromQuery] Guid id, [FromBody] string newWalletName)
         {
             try
             {
-                var result = await _mediator.Send(new ChangeWalletNameCommand(walletName, newWalletName));
+                var result = await _mediator.Send(new ChangeWalletNameCommand(id, newWalletName));
 
                 if(!result)
                     return NotFound();
