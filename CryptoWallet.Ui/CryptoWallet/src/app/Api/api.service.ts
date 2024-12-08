@@ -44,8 +44,8 @@ export class ApiService {
       );
   }
 
-  renameWallet(WalletName: string, Id: string): Observable<string> {
-    return this.http.put<string>(`${this.baseURL}/Wallet?id=${Id}`, JSON.stringify(WalletName), {
+  renameWallet(WalletName: string, Id: string): Observable<boolean> {
+    return this.http.put<boolean>(`${this.baseURL}/Wallet?id=${Id}`, JSON.stringify(WalletName), {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       responseType: 'text' as 'json'
     })
@@ -53,6 +53,16 @@ export class ApiService {
         catchError((error) => {
           console.error('API Error:', error);
           throw error.error;
+        })
+      );
+  }
+
+  removeWallet(walletId: string): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.baseURL}/Remove?id=${walletId}`)
+      .pipe(
+        catchError((error) => {
+          console.error('API Error:', error);
+          throw error;
         })
       );
   }

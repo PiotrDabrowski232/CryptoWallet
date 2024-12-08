@@ -137,23 +137,28 @@ export class WalletsComponent implements OnInit {
   updateWallet(): void {
     if (this.newWalletName.trim()) {
       this.apiService.renameWallet(this.newWalletName, this.updateWalletId).subscribe({
-        next: () => {
-          this.showToast("text-bg-success", `Wallet added successfully`)
-          this.newWalletName = '';
-          this.inputComponent.clearInput();
+        next: data => {
+          if (data) {
+            this.showToast("text-bg-success", `Wallet added successfully`)
+            this.newWalletName = '';
+            this.inputComponent.clearInput();
 
-          const modal = document.getElementById(this.updateModalBsTarget);
+            const modal = document.getElementById(this.updateModalBsTarget);
 
-          if (modal) {
-            const modalInstance = Modal.getInstance(modal);
-            modalInstance?.hide();
+            if (modal) {
+              const modalInstance = Modal.getInstance(modal);
+              modalInstance?.hide();
+            }
+
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+              backdrop.remove();
+            }
+            this.ngOnInit();
           }
-
-          const backdrop = document.querySelector('.modal-backdrop');
-          if (backdrop) {
-            backdrop.remove();
+          else {
+            this.showToast("text-bg-danger", "some problem occured")
           }
-          this.ngOnInit();
         },
         error: (error) => {
           if (error)

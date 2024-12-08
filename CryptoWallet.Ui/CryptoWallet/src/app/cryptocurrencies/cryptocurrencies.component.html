@@ -1,35 +1,55 @@
+<div
+  class="toast position-fixed align-items-center border-0"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  id="liveToast"
+  style="z-index: 1100"
+>
+  <div class="d-flex">
+    <div class="toast-body">{{ toastMessage }}</div>
+  </div>
+</div>
+
 <div class="walletName">
   <h3>Wallet: {{ walletInfo?.name }}</h3>
+  <div>
+    <app-button
+      style="margin-right: 1vw"
+      [config]="deleteButton"
+      (click)="deleteWallet()"
+    ></app-button>
+    <app-button style="margin-right: 1vw" [config]="updateButton"></app-button>
+    <app-button [config]="turnConversionOnButton"></app-button>
+  </div>
 </div>
 
 <div>
-  <table class="table">
+  <table
+    class="table"
+    *ngIf="
+      walletInfo != null && walletInfo.currencies.length > 0;
+      else noCurrencies
+    "
+  >
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Cryptocurrency Name</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Conversion</th>
+        <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th>1</th>
-        <td>Mark</td>
-        <td>Otto</td>
+      <tr *ngFor="let crypto of walletInfo.currencies">
+        <th>{{ crypto.name }}</th>
+        <td>{{ crypto.value }}</td>
         <td></td>
-      </tr>
-      <tr>
-        <th>2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td></td>
-      </tr>
-      <tr>
-        <th>3</th>
-        <td colspan="2">Larry the Bird</td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  <ng-template #noCurrencies>
+    <h3 style="margin-left: 42.5vw">No currencies added</h3>
+  </ng-template>
 </div>
