@@ -8,10 +8,11 @@ import { InputConfig } from '../input/input.interface';
 import { ApiService } from '../Api/api.service';
 import { Modal, Toast } from 'bootstrap';
 import { Router } from '@angular/router';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-wallets',
-  imports: [ButtonComponent, CommonModule, InputComponent],
+  imports: [ButtonComponent, CommonModule, InputComponent, ModalComponent],
   templateUrl: './wallets.components.html',
   styles: `
     ::ng-deep .newWallet { 
@@ -47,6 +48,8 @@ export class WalletsComponent implements OnInit {
 
   @ViewChild(InputComponent) inputComponent!: InputComponent;
 
+  modalBsToggle: string = 'modal';
+  modalBsTarget: string = 'exampleModal';
   newWalletName: string = '';
   toastMessage: string = '';
   walletList: WalletBasicInfo[] = [];
@@ -91,24 +94,25 @@ export class WalletsComponent implements OnInit {
       this.apiService.newWallet(this.newWalletName).subscribe({
         next: data => {
           this.showToast("text-bg-success", "Wallet added successfully")
-          this.newWalletName = '';
-          this.inputComponent.clearInput();
+          setTimeout(() => {
+            this.newWalletName = '';
+            this.inputComponent.clearInput();
 
-          const modal = document.getElementById("exampleModal");
+            const modal = document.getElementById("exampleModal");
 
-          if (modal) {
-            const modalInstance = Modal.getInstance(modal);
-            console.log(modalInstance)
-            modalInstance?.hide();
-          }
+            if (modal) {
+              const modalInstance = Modal.getInstance(modal);
+              console.log(modalInstance)
+              modalInstance?.hide();
+            }
 
-          const backdrop = document.querySelector('.modal-backdrop');
-          if (backdrop) {
-            backdrop.remove();
-          }
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+              backdrop.remove();
+            }
 
-          this.navigateToWallet(data);
-
+            this.navigateToWallet(data);
+          }, 2500);
         },
         error: (error) => {
           if (error)

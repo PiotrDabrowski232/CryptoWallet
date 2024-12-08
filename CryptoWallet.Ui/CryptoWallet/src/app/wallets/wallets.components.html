@@ -39,34 +39,22 @@
   <p class="noWallets">No wallets in the system. Add a new wallet.</p>
 </ng-template>
 
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Add new wallet</h1>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <app-input
-          [config]="walletName"
-          (providedWalletName)="onWalletNameChange($event)"
-        ></app-input>
-      </div>
-      <div class="modal-footer">
-        <app-button [config]="closeButton" data-bs-dismiss="modal"></app-button>
-        <app-button [config]="saveButton" (click)="addWallet()"></app-button>
-      </div>
-    </div>
+<app-modal [dataBsTarget]="modalBsTarget" [dataBsToggle]="modalBsTarget">
+  <div modal-header>
+    <h1 class="modal-title fs-5">Add new wallet</h1>
   </div>
-</div>
+  <div modal-body>
+    <app-input
+      [config]="walletName"
+      (providedWalletName)="onWalletNameChange($event)"
+    ></app-input>
+  </div>
+  <div modal-footer>
+    <app-button
+      style="margin-right: 0.5vw"
+      [config]="closeButton"
+      data-bs-dismiss="modal"
+    ></app-button>
+    <app-button [config]="saveButton" (click)="addWallet()"></app-button>
+  </div>
+</app-modal>

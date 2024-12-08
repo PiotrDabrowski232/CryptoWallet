@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
-import { WalletBasicInfo } from './ApiResult.interface';
+import { WalletBasicInfo, WalletDto } from './ApiResult.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,16 @@ export class ApiService {
 
   getWallets(): Observable<WalletBasicInfo[]> {
     return this.http.get<WalletBasicInfo[]>(`${this.baseURL}/Wallets`)
+      .pipe(
+        catchError((error) => {
+          console.error('API Error:', error);
+          throw error;
+        })
+      );
+  }
+
+  getWalletElements(walletId: string): Observable<WalletDto> {
+    return this.http.get<WalletDto>(`${this.baseURL}/Wallet?id=${walletId}`)
       .pipe(
         catchError((error) => {
           console.error('API Error:', error);
