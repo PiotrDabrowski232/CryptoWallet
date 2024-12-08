@@ -55,6 +55,8 @@ export class WalletsComponent implements OnInit {
 
   addModalBsTarget: string = 'addWalletModal';
   updateModalBsTarget: string = 'updateWalletModal';
+  updateWalletName: string = '';
+  updateWalletId: any;
   newWalletName: string = '';
   toastMessage: string = '';
   walletList: WalletBasicInfo[] = [];
@@ -85,7 +87,7 @@ export class WalletsComponent implements OnInit {
         this.walletList = data;
       },
       error: (error) => {
-        console.log(error)
+        this.showToast("text-bg-danger", error)
       }
     })
   }
@@ -107,7 +109,6 @@ export class WalletsComponent implements OnInit {
 
             if (modal) {
               const modalInstance = Modal.getInstance(modal);
-              console.log(modalInstance)
               modalInstance?.hide();
             }
 
@@ -133,10 +134,38 @@ export class WalletsComponent implements OnInit {
     });
   }
 
+  updateWallet(): void {
+    if (this.newWalletName.trim()) {
+      this.apiService.renameWallet(this.newWalletName, this.updateWalletId).subscribe({
+        next: () => {
+          this.showToast("text-bg-success", `Wallet added successfully`)
+          this.newWalletName = '';
+          this.inputComponent.clearInput();
+
+          const modal = document.getElementById(this.updateModalBsTarget);
+
+          if (modal) {
+            const modalInstance = Modal.getInstance(modal);
+            modalInstance?.hide();
+          }
+
+          const backdrop = document.querySelector('.modal-backdrop');
+          if (backdrop) {
+            backdrop.remove();
+          }
+          this.ngOnInit();
+        },
+        error: (error) => {
+          if (error)
+            this.showToast("text-bg-danger", error)
+        }
+      })
+    }
+  }
+
   walletName: InputConfig = {
     type: "Text",
-    label: "Wallet Name",
-    currentValue: ''
+    label: "Wallet Name"
   }
 
   primaryButton: ButtonConfig = {
@@ -176,6 +205,14 @@ export class WalletsComponent implements OnInit {
   saveButton: ButtonConfig = {
     color: 'btn-success',
     label: 'add',
+    width: "fit-content",
+    height: 'auto',
+    type: 'button'
+  }
+
+  updateButton: ButtonConfig = {
+    color: 'btn-success',
+    label: 'update',
     width: "fit-content",
     height: 'auto',
     type: 'button'

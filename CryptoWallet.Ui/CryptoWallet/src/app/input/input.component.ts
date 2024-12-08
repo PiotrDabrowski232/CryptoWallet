@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, output } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output, output } from '@angular/core';
 import { InputConfig } from './input.interface';
 
 @Component({
@@ -6,7 +6,7 @@ import { InputConfig } from './input.interface';
   imports: [],
   template: `
     <div class="form-floating mb-3">
-      <input #WalletNameAdded [type]="config.type" class="form-control" id="floatingInput" [value]="this.config.currentValue ?? ''" [placeholder]="config.label" (input)="onInput($event)">
+      <input #WalletNameAdded [type]="config.type" class="form-control" id="floatingInput" [value]="name" [placeholder]="config.label" (input)="onInput($event)">
       <label for="floatingInput">{{config.label}}</label>
     </div>
   `,
@@ -14,6 +14,7 @@ import { InputConfig } from './input.interface';
 })
 export class InputComponent<T = string> {
   @Input() config!: InputConfig<T>;
+  @Input() name?: string = '';
   @Output() providedWalletName = new EventEmitter<T>();
 
   onInput(event: Event): void {
