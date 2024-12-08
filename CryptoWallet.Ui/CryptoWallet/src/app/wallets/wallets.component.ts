@@ -168,7 +168,7 @@ export class WalletsComponent implements OnInit {
     }
   }
 
-  walletName: InputConfig = {
+  walletName: InputConfig<string> = {
     type: "Text",
     label: "Wallet Name"
   }

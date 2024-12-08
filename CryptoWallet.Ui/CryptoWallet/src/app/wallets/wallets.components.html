@@ -53,7 +53,7 @@
   <div modal-body>
     <app-input
       [config]="walletName"
-      (providedWalletName)="onWalletNameChange($event)"
+      (providedValue)="onWalletNameChange($event)"
     ></app-input>
   </div>
   <div modal-footer>
@@ -73,7 +73,7 @@
   <div modal-body>
     <app-input
       [config]="walletName"
-      (providedWalletName)="onWalletNameChange($event)"
+      (providedValue)="onWalletNameChange($event)"
       [name]="updateWalletName"
     ></app-input>
   </div>

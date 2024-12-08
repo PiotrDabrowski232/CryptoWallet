@@ -15,7 +15,7 @@ import { InputConfig } from './input.interface';
 export class InputComponent<T = string> {
   @Input() config!: InputConfig<T>;
   @Input() name?: string = '';
-  @Output() providedWalletName = new EventEmitter<T>();
+  @Output() providedValue = new EventEmitter<T>();
 
   onInput(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -26,8 +26,9 @@ export class InputComponent<T = string> {
     if (this.config.type === 'Text')
       value = String(value);
 
-    this.providedWalletName.emit(value as T);
+    this.providedValue.emit(value as T);
   }
+
   clearInput(): void {
     const input = document.getElementById("floatingInput") as HTMLInputElement;
     input.value = '';

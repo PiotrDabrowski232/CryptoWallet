@@ -7,10 +7,15 @@ import { ButtonConfig } from '../button/button-interface';
 import { CommonModule } from '@angular/common';
 import { Toast } from 'bootstrap';
 import { Router } from '@angular/router';
+import { ModalComponent } from '../modal/modal.component';
+import { InputComponent } from '../input/input.component';
+import { InputConfig } from '../input/input.interface';
+import { FormsModule } from '@angular/forms';
+import { NewCryptoDto } from '../Api/ApiResult.interface';
 
 @Component({
   selector: 'app-cryptocurrencies',
-  imports: [ButtonComponent, CommonModule],
+  imports: [ButtonComponent, CommonModule, ModalComponent, InputComponent, FormsModule],
   templateUrl: './cryptocurrencies.component.html',
   styles: `
   .walletName{
@@ -24,6 +29,10 @@ export class CryptocurrenciesComponent implements OnInit {
   queryParams: string | null = '';
   walletInfo: WalletDto | null = null;
   toastMessage: string = '';
+  cryptoNames: string[] = [];
+  addCryptoModal: string = 'addCryptoModal';
+  cryptoAmount: number = 0;
+  selectedCrypto: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) { }
 
@@ -54,10 +63,19 @@ export class CryptocurrenciesComponent implements OnInit {
         next: data => {
           this.walletInfo = data;
         },
-        error: (error) => {
+        error: () => {
           this.showToast("text-bg-danger", "Some problem occured")
         }
       })
+
+    this.apiService.getCryptoNames().subscribe({
+      next: data => {
+        this.cryptoNames = data;
+      },
+      error: () => {
+        this.showToast("text-bg-danger", "Some problem occured")
+      }
+    })
   }
 
   deleteWallet(): void {
@@ -81,6 +99,35 @@ export class CryptocurrenciesComponent implements OnInit {
       })
   }
 
+  addCrypto(): void {
+    if (this.queryParams != null) {
+      const newCrypto: NewCryptoDto = {
+        walletId: this.queryParams,
+        name: this.selectedCrypto,
+        value: this.cryptoAmount
+      }
+
+      this.apiService.newCrypto(newCrypto).subscribe({
+        next: data => {
+          console.log(data)
+        },
+        error: error => {
+          this.showToast("text-bg-danger", error)
+        }
+      })
+
+    }
+  }
+
+  onWCryptoAmountChange(newValue: number): void {
+    this.cryptoAmount = newValue;
+  }
+
+  onCryptoChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this.selectedCrypto = target.value;
+  }
+
   deleteButton: ButtonConfig = {
     color: 'btn-danger',
     label: 'Delete Wallet',
@@ -89,7 +136,7 @@ export class CryptocurrenciesComponent implements OnInit {
     type: 'button'
   }
 
-  updateButton: ButtonConfig = {
+  addCurrencyButton: ButtonConfig = {
     color: 'btn-primary',
     label: 'Add Cryptocurrency',
     width: "fit-content",
@@ -100,6 +147,27 @@ export class CryptocurrenciesComponent implements OnInit {
   turnConversionOnButton: ButtonConfig = {
     color: 'btn-success',
     label: 'Turn On Conversion',
+    width: "fit-content",
+    height: 'auto',
+    type: 'button'
+  }
+
+  CryptoAmountInput: InputConfig<number> = {
+    type: "Number",
+    label: "Cryptocurrency amount"
+  }
+
+  closeButton: ButtonConfig = {
+    color: 'btn-secondary',
+    label: 'Close',
+    width: "fit-content",
+    height: 'auto',
+    type: 'button'
+  }
+
+  addButton: ButtonConfig = {
+    color: 'btn-success',
+    label: 'Add',
     width: "fit-content",
     height: 'auto',
     type: 'button'

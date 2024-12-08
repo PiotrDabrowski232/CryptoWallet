@@ -1,5 +1,6 @@
 ﻿using CryptoWallet.Logic.Dto.Crypto;
 using CryptoWallet.Logic.Functions.Command;
+using CryptoWallet.Logic.Functions.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,21 @@ namespace CryptoWallet.Controllers
     public class CryptocurrencyController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
+
+        [HttpGet]
+        [Route("/Names")]
+        public async Task<ActionResult> CryptoNames()
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetAllCryptocurrencyNames());
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost]
         [Route("/NewCrypto")]

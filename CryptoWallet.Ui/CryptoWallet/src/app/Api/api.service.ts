@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
-import { WalletBasicInfo, WalletDto } from './ApiResult.interface';
+import { CryptocurrencyDto, NewCryptoDto, WalletBasicInfo, WalletDto } from './ApiResult.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,16 @@ export class ApiService {
   private baseURL = 'https://localhost:7086';
 
   constructor(private http: HttpClient) { }
+
+  getCryptoNames(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseURL}/Names`)
+      .pipe(
+        catchError((error) => {
+          console.error('API Error:', error);
+          throw error;
+        })
+      );
+  }
 
   getWallets(): Observable<WalletBasicInfo[]> {
     return this.http.get<WalletBasicInfo[]>(`${this.baseURL}/Wallets`)
@@ -39,6 +49,19 @@ export class ApiService {
       .pipe(
         catchError((error) => {
           console.error('API Error:', error);
+          throw error.error;
+        })
+      );
+  }
+
+  newCrypto(newCrypto: NewCryptoDto): Observable<CryptocurrencyDto> {
+    return this.http.post<CryptocurrencyDto>(`${this.baseURL}/NewCrypto`, JSON.stringify(newCrypto), {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      responseType: 'text' as 'json'
+    })
+      .pipe(
+        catchError((error) => {
+          console.error('API Error:', error.error);
           throw error.error;
         })
       );

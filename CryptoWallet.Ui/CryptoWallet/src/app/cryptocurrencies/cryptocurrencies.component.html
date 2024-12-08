@@ -19,7 +19,12 @@
       [config]="deleteButton"
       (click)="deleteWallet()"
     ></app-button>
-    <app-button style="margin-right: 1vw" [config]="updateButton"></app-button>
+    <app-button
+      style="margin-right: 1vw"
+      [config]="addCurrencyButton"
+      data-bs-toggle="modal"
+      data-bs-target="#addCryptoModal"
+    ></app-button>
     <app-button [config]="turnConversionOnButton"></app-button>
   </div>
 </div>
@@ -53,3 +58,33 @@
     <h3 style="margin-left: 42.5vw">No currencies added</h3>
   </ng-template>
 </div>
+
+<app-modal [dataBsTarget]="addCryptoModal">
+  <div modal-header>
+    <h1 class="modal-title fs-5">Add cryptocurrency</h1>
+  </div>
+  <div modal-body>
+    <select
+      class="form-select form-select-lg mb-3"
+      aria-label="Large select example"
+      (change)="onCryptoChange($event)"
+    >
+      <option selected disabled>Select Cryptocurrency</option>
+      <option *ngFor="let name of cryptoNames" [value]="name">
+        {{ name }}
+      </option>
+    </select>
+    <app-input
+      [config]="CryptoAmountInput"
+      (providedValue)="onWCryptoAmountChange($event)"
+    ></app-input>
+  </div>
+  <div modal-footer>
+    <app-button
+      style="margin-right: 0.5vw"
+      [config]="closeButton"
+      data-bs-dismiss="modal"
+    ></app-button>
+    <app-button [config]="addButton" (click)="addCrypto()"></app-button>
+  </div>
+</app-modal>
