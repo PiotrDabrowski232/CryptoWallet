@@ -25,7 +25,10 @@
       data-bs-toggle="modal"
       data-bs-target="#addCryptoModal"
     ></app-button>
-    <app-button [config]="turnConversionOnButton"></app-button>
+    <app-button
+      *ngIf="!walletInfo?.conversionSwitched"
+      [config]="turnConversionOnButton"
+    ></app-button>
   </div>
 </div>
 
@@ -38,19 +41,36 @@
     "
   >
     <thead>
-      <tr>
+      <tr style="text-align: center">
         <th scope="col">Cryptocurrency Name</th>
         <th scope="col">Amount</th>
-        <th scope="col">Conversion</th>
+        <th *ngIf="walletInfo.conversionSwitched" scope="col">Conversion</th>
         <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let crypto of walletInfo.currencies">
+      <tr
+        *ngFor="let crypto of walletInfo.currencies"
+        style="text-align: center"
+      >
         <th>{{ crypto.name }}</th>
-        <td>{{ crypto.value }}</td>
-        <td></td>
-        <td></td>
+        <td>{{ crypto.value }} {{ crypto.description }}</td>
+        <td *ngIf="walletInfo.conversionSwitched"></td>
+        <td>
+          <app-button
+            [config]="removeCryptoButton"
+            (click)="RemoveCryptoFromWallet(crypto.id)"
+          >
+          </app-button>
+          <app-button
+            style="margin-left: 0.5vw"
+            [config]="updateCryptoButton"
+            data-bs-toggle="modal"
+            data-bs-target="#updateCryptoModal"
+            (click)="setValues(crypto)"
+          >
+          </app-button>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -68,16 +88,31 @@
       class="form-select form-select-lg mb-3"
       aria-label="Large select example"
       (change)="onCryptoChange($event)"
+      id="cryptoSelector"
     >
-      <option selected disabled>Select Cryptocurrency</option>
+      <option value="1" selected disabled>Select Cryptocurrency</option>
       <option *ngFor="let name of cryptoNames" [value]="name">
         {{ name }}
       </option>
     </select>
+    <div *ngIf="validationErrors?.Name" class="text-danger">
+      <p style="padding-left: 1vw" *ngFor="let error of validationErrors?.Name">
+        {{ validationErrors?.Name }}
+      </p>
+    </div>
+
     <app-input
       [config]="CryptoAmountInput"
       (providedValue)="onWCryptoAmountChange($event)"
     ></app-input>
+    <div *ngIf="validationErrors?.Value" class="text-danger">
+      <p
+        style="padding-left: 1vw"
+        *ngFor="let error of validationErrors?.Value"
+      >
+        {{ validationErrors?.Value }}
+      </p>
+    </div>
   </div>
   <div modal-footer>
     <app-button
@@ -86,5 +121,54 @@
       data-bs-dismiss="modal"
     ></app-button>
     <app-button [config]="addButton" (click)="addCrypto()"></app-button>
+  </div>
+</app-modal>
+
+<app-modal [dataBsTarget]="updateCryptoModal">
+  <div modal-header>
+    <h1 class="modal-title fs-5">Update Cryptocurrency info</h1>
+  </div>
+  <div modal-body>
+    <select
+      class="form-select form-select-lg mb-3"
+      aria-label="Large select example"
+      (change)="onCryptoChange($event)"
+      id="cryptoUpdateSelector"
+    >
+      <option value="1" selected disabled>Select Cryptocurrency</option>
+      <option *ngFor="let name of cryptoNames" [value]="name">
+        {{ name }}
+      </option>
+    </select>
+    <div *ngIf="validationErrors?.Name" class="text-danger">
+      <p style="padding-left: 1vw" *ngFor="let error of validationErrors?.Name">
+        {{ validationErrors?.Name }}
+      </p>
+    </div>
+
+    <app-input
+      [config]="CryptoAmountInput"
+      (providedValue)="onWCryptoAmountChange($event)"
+      [name]="cryptoToUpdate.value"
+    ></app-input>
+    <div *ngIf="validationErrors?.Value" class="text-danger">
+      <p
+        style="padding-left: 1vw"
+        *ngFor="let error of validationErrors?.Value"
+      >
+        {{ validationErrors?.Value }}
+      </p>
+    </div>
+  </div>
+  <div modal-footer>
+    <app-button
+      style="margin-right: 0.5vw"
+      [config]="closeButton"
+      data-bs-dismiss="modal"
+    ></app-button>
+    <app-button
+      [config]="addButton"
+      (click)="updateCryptoCurrency()"
+    ></app-button>
   </div>
 </app-modal>

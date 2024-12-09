@@ -6,5 +6,6 @@ namespace CryptoWallet.Logic.Dto.Wallet
     {
         public string Name { get; set; }
         public IList<CryptocurrencyDto>? Currencies { get; set; }
+        public bool ConversionSwitched { get; set; }
     }
 }

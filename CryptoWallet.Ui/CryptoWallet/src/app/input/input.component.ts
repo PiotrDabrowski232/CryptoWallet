@@ -14,7 +14,7 @@ import { InputConfig } from './input.interface';
 })
 export class InputComponent<T = string> {
   @Input() config!: InputConfig<T>;
-  @Input() name?: string = '';
+  @Input() name?: string | number | null = null;
   @Output() providedValue = new EventEmitter<T>();
 
   onInput(event: Event): void {

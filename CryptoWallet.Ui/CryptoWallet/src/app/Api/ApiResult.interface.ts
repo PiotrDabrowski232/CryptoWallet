@@ -6,16 +6,31 @@ export interface WalletBasicInfo {
 
 export interface WalletDto {
     name: string,
-    currencies: CryptocurrencyDto[]
+    currencies: CryptocurrencyDto[],
+    conversionSwitched: boolean
 }
 
 export interface CryptocurrencyDto {
+    id: string,
     name: string,
-    value: number
+    value: number,
+    description: string
 }
 
 export interface NewCryptoDto {
     walletId: string,
     name: string,
     value: number
+}
+
+export interface ValidationErrors {
+    Name?: string[];
+    Value?: string[];
+}
+
+export interface UpdateCryptoDto {
+    walletId?: string,
+    id?: string,
+    name?: string,
+    value?: number
 }

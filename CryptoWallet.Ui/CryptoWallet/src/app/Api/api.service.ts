@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError } from 'rxjs';
-import { CryptocurrencyDto, NewCryptoDto, WalletBasicInfo, WalletDto } from './ApiResult.interface';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
+import { CryptocurrencyDto, NewCryptoDto, UpdateCryptoDto, ValidationErrors, WalletBasicInfo, WalletDto } from './ApiResult.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -57,13 +57,10 @@ export class ApiService {
   newCrypto(newCrypto: NewCryptoDto): Observable<CryptocurrencyDto> {
     return this.http.post<CryptocurrencyDto>(`${this.baseURL}/NewCrypto`, JSON.stringify(newCrypto), {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      responseType: 'text' as 'json'
+      responseType: 'json'
     })
       .pipe(
-        catchError((error) => {
-          console.error('API Error:', error.error);
-          throw error.error;
-        })
+        catchError((error) => handleErrors(error))
       );
   }
 
@@ -80,8 +77,27 @@ export class ApiService {
       );
   }
 
+  updateCrypto(updateCrypto: UpdateCryptoDto): Observable<boolean> {
+    return this.http.put<boolean>(`${this.baseURL}/UpdateCrypto`, JSON.stringify(updateCrypto), {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      responseType: 'json'
+    })
+      .pipe(
+        catchError((error) => handleErrors(error))
+      )
+  }
+
   removeWallet(walletId: string): Observable<boolean> {
     return this.http.delete<boolean>(`${this.baseURL}/Remove?id=${walletId}`)
+      .pipe(
+        catchError((error) => {
+          throw error;
+        })
+      );
+  }
+
+  removeCrypto(cryptoId: string): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.baseURL}/RemoveCrypto?id=${cryptoId}`)
       .pipe(
         catchError((error) => {
           console.error('API Error:', error);
@@ -89,4 +105,14 @@ export class ApiService {
         })
       );
   }
+}
+
+
+export function handleErrors(error: HttpErrorResponse) {
+  console.log(error)
+  if (error.status === 400 && error.error && error.error.errors) {
+    return throwError(() => error.error.errors as ValidationErrors);
+  }
+
+  return throwError(() => new Error('Unexpected error occurred'));
 }

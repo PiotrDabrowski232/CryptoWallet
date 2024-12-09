@@ -68,7 +68,6 @@ namespace CryptoWallet.Controllers
             try
             {
                 var result = await _mediator.Send(new UpdateCryptoCommand(crypto));
-
                 return Ok(result);
             }
             catch (Exception ex)

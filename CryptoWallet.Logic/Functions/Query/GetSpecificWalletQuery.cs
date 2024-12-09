@@ -1,6 +1,7 @@
 ﻿using CryptoWallet.Data.DatabaseConnection;
 using CryptoWallet.Logic.Dto.Crypto;
 using CryptoWallet.Logic.Dto.Wallet;
+using CryptoWallet.Logic.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,9 +26,12 @@ namespace CryptoWallet.Logic.Functions.Query
                     Name = x.Name,
                     Currencies = x.Cryptocurrencies.Select(y => new CryptocurrencyDto
                     {
+                        Id = y.Id,
                         Name = Enum.GetName(y.Name),
                         Value = y.Value,
-                    }).ToList()
+                        Description = y.Name.GetEnumDescription()
+                    }).ToList(),
+                    ConversionSwitched = false,
                 })
                 .FirstOrDefaultAsync(cancellationToken) ?? new WalletDto();
         }

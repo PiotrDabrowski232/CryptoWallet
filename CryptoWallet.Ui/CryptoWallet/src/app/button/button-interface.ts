@@ -1,8 +1,9 @@
 export interface ButtonConfig {
-    label: string
+    label?: string
     color: string,
     width?: string,
     height?: string,
     additionalClass?: string,
-    type: string
+    type: string,
+    icon?: string
 }

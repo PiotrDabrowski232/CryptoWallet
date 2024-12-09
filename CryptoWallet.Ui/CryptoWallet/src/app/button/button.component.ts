@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { ButtonConfig } from './button-interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-button',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   template: `
     <button 
     [type]="config.type || 'button'"
@@ -15,7 +16,8 @@ import { ButtonConfig } from './button-interface';
       height: config.height || 'auto'
      }"
      >
-      {{config.label || 'button'}}
+      {{config.label}}
+      <i *ngIf="config.icon" class="bi " [class]="config.icon"></i>
     </button>
   `,
   styles: ``
