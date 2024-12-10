@@ -42,6 +42,8 @@ namespace CryptoWallet.Logic.Functions.Query
 
             if (request.Conversion == true)
             {
+                await _binanceService.Initialize();
+
                 result.Currencies = await Task.WhenAll(
                     result.Currencies.Select(async x =>
                     {

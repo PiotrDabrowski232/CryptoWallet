@@ -8,6 +8,27 @@ namespace CryptoWallet.Data.Models.Enums
         Bitcoin,
 
         [Description("ETH")]
-        Ethereum
+        Ethereum,
+
+        [Description("BNB")]
+        BNB,
+
+        [Description("USDT")]
+        TetherUS,
+
+        [Description("XRP")]
+        XRP,
+
+        [Description("DOGE")]
+        DogeCoin,
+
+        [Description("ADA")]
+        Cardano,
+
+        [Description("SHIB")]
+        SHIBAINU,
+
+        [Description("DOT")]
+        Polkadot,
     }
 }

@@ -83,6 +83,14 @@
           </app-button>
         </td>
       </tr>
+      <tr class="table-success" *ngIf="walletInfo.conversionSwitched">
+        <td colspan="3" style="text-align: right">Sum:</td>
+        <td style="text-align: center">
+          {{ CalculateSum() | number: '1.2-2' }}
+          PLN
+        </td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <ng-template #noCurrencies>

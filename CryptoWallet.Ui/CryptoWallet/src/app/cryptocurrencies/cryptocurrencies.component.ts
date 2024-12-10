@@ -178,6 +178,14 @@ export class CryptocurrenciesComponent implements OnInit {
     })
   }
 
+  CalculateSum(): number {
+    if (this.walletInfo)
+      return this.walletInfo.currencies.reduce((sum, item) => sum + (item.coinPrice || 0) * (item.value || 0), 0);
+    else
+      return 0;
+  }
+
+
   TurnOnConversion(): void {
     if (this.queryParams)
       this.apiService.getWalletElements(this.queryParams, true).subscribe({
