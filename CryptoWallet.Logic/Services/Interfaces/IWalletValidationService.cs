@@ -1,6 +1,6 @@
 ﻿namespace CryptoWallet.Logic.Services
 {
-    public interface IWalletService
+    public interface IWalletValidationService
     {
         public Task WalletValidation(string name, CancellationToken ct);
     }

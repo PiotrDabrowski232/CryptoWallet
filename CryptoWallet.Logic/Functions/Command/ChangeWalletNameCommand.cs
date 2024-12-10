@@ -13,8 +13,8 @@ namespace CryptoWallet.Logic.Functions.Command
 
     public class ChangeWalletNameCommandHandler : BaseRequestHandler<ChangeWalletNameCommand, bool>
     {
-        private readonly IWalletService _walletService;
-        public ChangeWalletNameCommandHandler(CryptoWalletDbContext context, IWalletService walletService) : base(context)
+        private readonly IWalletValidationService _walletService;
+        public ChangeWalletNameCommandHandler(CryptoWalletDbContext context, IWalletValidationService walletService) : base(context)
         {
             _walletService = walletService;
         }

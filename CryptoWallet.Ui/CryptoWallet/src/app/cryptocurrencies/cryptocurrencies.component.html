@@ -28,6 +28,7 @@
     <app-button
       *ngIf="!walletInfo?.conversionSwitched"
       [config]="turnConversionOnButton"
+      (click)="TurnOnConversion()"
     ></app-button>
   </div>
 </div>
@@ -44,7 +45,10 @@
       <tr style="text-align: center">
         <th scope="col">Cryptocurrency Name</th>
         <th scope="col">Amount</th>
-        <th *ngIf="walletInfo.conversionSwitched" scope="col">Conversion</th>
+        <th *ngIf="walletInfo.conversionSwitched" scope="col">Coin Price</th>
+        <th *ngIf="walletInfo.conversionSwitched" scope="col">
+          After conversion
+        </th>
         <th scope="col">Actions</th>
       </tr>
     </thead>
@@ -55,7 +59,14 @@
       >
         <th>{{ crypto.name }}</th>
         <td>{{ crypto.value }} {{ crypto.description }}</td>
-        <td *ngIf="walletInfo.conversionSwitched"></td>
+        <td *ngIf="walletInfo.conversionSwitched">
+          {{ crypto.coinPrice }} PLN
+        </td>
+        <td
+          *ngIf="walletInfo.conversionSwitched && crypto.coinPrice != undefined"
+        >
+          {{ crypto.coinPrice * crypto.value | number: '1.2-2' }} PLN
+        </td>
         <td>
           <app-button
             [config]="removeCryptoButton"

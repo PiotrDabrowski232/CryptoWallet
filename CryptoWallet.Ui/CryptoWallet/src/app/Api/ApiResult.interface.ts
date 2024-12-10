@@ -14,7 +14,8 @@ export interface CryptocurrencyDto {
     id: string,
     name: string,
     value: number,
-    description: string
+    description: string,
+    coinPrice?: number
 }
 
 export interface NewCryptoDto {

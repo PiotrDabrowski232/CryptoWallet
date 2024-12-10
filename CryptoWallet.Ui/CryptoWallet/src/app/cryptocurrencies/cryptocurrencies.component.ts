@@ -178,6 +178,18 @@ export class CryptocurrenciesComponent implements OnInit {
     })
   }
 
+  TurnOnConversion(): void {
+    if (this.queryParams)
+      this.apiService.getWalletElements(this.queryParams, true).subscribe({
+        next: data => {
+          this.walletInfo = data;
+        },
+        error: () => {
+          this.showToast("text-bg-danger", "Some problem occured")
+        }
+      })
+  }
+
   onWCryptoAmountChange(newValue: number): void {
     this.cryptoAmount = newValue;
   }

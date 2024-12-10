@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CryptoWallet.Logic.Services
 {
-    public class WalletService : IWalletService
+    public class WalletValidationService : IWalletValidationService
     {
         private readonly CryptoWalletDbContext _dbContext;
-        public WalletService(CryptoWalletDbContext dbContext)
+        public WalletValidationService(CryptoWalletDbContext dbContext)
         {
             _dbContext = dbContext;
         }

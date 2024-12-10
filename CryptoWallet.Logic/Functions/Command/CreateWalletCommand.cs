@@ -14,8 +14,8 @@ namespace CryptoWallet.Logic.Functions.Command
 
     public class CreateWalletCommandHandler : BaseRequestHandler<CreateWalletCommand, string>
     {
-        private readonly IWalletService _walletService;
-        public CreateWalletCommandHandler(CryptoWalletDbContext context, IWalletService walletService) : base(context)
+        private readonly IWalletValidationService _walletService;
+        public CreateWalletCommandHandler(CryptoWalletDbContext context, IWalletValidationService walletService) : base(context)
         {
             _walletService = walletService;
         }

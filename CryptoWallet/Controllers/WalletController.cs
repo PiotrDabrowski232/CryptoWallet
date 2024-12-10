@@ -43,11 +43,11 @@ namespace CryptoWallet.Controllers
 
         [HttpGet]
         [Route("/Wallet")]
-        public async Task<ActionResult> Wallet([FromQuery] Guid id)
+        public async Task<ActionResult> Wallet([FromQuery] Guid id, [FromQuery] bool? conversion)
         {
             try
             {
-                var result = await _mediator.Send(new GetSpecificWalletQuery(id));
+                var result = await _mediator.Send(new GetSpecificWalletQuery(id, conversion));
                 return Ok(result);
             }
             catch (Exception ex)

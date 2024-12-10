@@ -31,8 +31,8 @@ export class ApiService {
       );
   }
 
-  getWalletElements(walletId: string): Observable<WalletDto> {
-    return this.http.get<WalletDto>(`${this.baseURL}/Wallet?id=${walletId}`)
+  getWalletElements(walletId: string, turnOnConverison?: boolean): Observable<WalletDto> {
+    return this.http.get<WalletDto>(`${this.baseURL}/Wallet?id=${walletId}${turnOnConverison !== undefined ? `&conversion=${turnOnConverison}` : ''}`)
       .pipe(
         catchError((error) => {
           console.error('API Error:', error);

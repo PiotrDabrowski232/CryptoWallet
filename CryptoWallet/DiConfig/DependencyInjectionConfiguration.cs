@@ -1,4 +1,5 @@
 ﻿using CryptoWallet.Logic.Services;
+using CryptoWallet.Logic.Services.Interfaces;
 using System.Reflection;
 
 namespace CryptoWallet.DiConfig
@@ -11,8 +12,9 @@ namespace CryptoWallet.DiConfig
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblies));
 
-            services.AddScoped<IWalletService, WalletService>();
-
+            services.AddScoped<IWalletValidationService, WalletValidationService>();
+            services.AddScoped<IBinanceCommunicationService, BinanceCommunicationService>();
+            services.AddHttpClient();
             return services;
         }
     }
