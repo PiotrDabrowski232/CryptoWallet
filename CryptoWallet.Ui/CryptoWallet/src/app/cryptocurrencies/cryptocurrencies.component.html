@@ -26,7 +26,11 @@
       data-bs-target="#addCryptoModal"
     ></app-button>
     <app-button
-      *ngIf="!walletInfo?.conversionSwitched"
+      *ngIf="
+        walletInfo &&
+        !walletInfo?.conversionSwitched &&
+        walletInfo.currencies.length > 0
+      "
       [config]="turnConversionOnButton"
       (click)="TurnOnConversion()"
     ></app-button>
