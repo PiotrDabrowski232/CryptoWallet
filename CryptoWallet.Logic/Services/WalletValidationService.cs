@@ -11,6 +11,7 @@ namespace CryptoWallet.Logic.Services
         {
             _dbContext = dbContext;
         }
+
         public async Task WalletValidation(string name, CancellationToken ct)
         {
             if (name.Length <= 5)
@@ -20,7 +21,6 @@ namespace CryptoWallet.Logic.Services
 
             if (nameExist)
                 throw new EntityExistException($"Wallet with given name exist {name}");
-
         }
     }
 }
